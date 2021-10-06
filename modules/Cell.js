@@ -1,71 +1,50 @@
 import getAdjacentCells from './getAdjacentCells.js';
 import getBombSVG from './getBombSVG.js';
 
-class Cell {
-    coordinates;
-    hasBomb;
-    element;
-    #grid;
-    #adjCells;
-    bombCount = 0;
-    state = 'hidden';
-    isClicked = false;
+function Cell(grid, coordinates, hasBomb) {
+    this.grid = grid;
+    this.coordinates = coordinates;
+    this.hasBomb = hasBomb;
+    this.element = document.createElement('div');
+    this.state = 'hidden';
+    this.isClicked = false;
+    this.bombCount = 0;
 
-    constructor(grid, coordinates, hasBomb) {
-        this.#grid = grid;
-        this.coordinates = coordinates;
-        this.hasBomb = hasBomb;
-        this.element = document.createElement('div');
-        const [x, y] = this.coordinates;
-        this.element.setAttribute('id', `${x}_${y}`);
-        this.element.classList.add('cell', 'hidden');
-        this.#adjCells = getAdjacentCells(
-            this.coordinates,
-            this.#grid.rows,
-            this.#grid.cols
-        );
-    }
+    const [x, y] = this.coordinates;
 
-    // only use this method when all the cells are created.
-    countBombs() {
-        if (!this.hasBomb) {
-            this.#adjCells.forEach(coor => {
-                if (this.#grid.getCell(coor).hasBomb) this.bombCount++;
+    this.element.classList.add('cell', 'hidden');
+    this.element.setAttribute('id', `${x}_${y}`);
+
+    this.adjCells = getAdjacentCells(
+        this.coordinates,
+        this.grid.rows,
+        this.grid.cols
+    );
+
+    this.countBombs = () => {
+        if (!this.hasBomb)
+            this.adjCells.forEach(coor => {
+                if (this.grid.getCell(coor).hasBomb) this.bombCount++;
             });
-        }
-    }
+    };
 
-    displayBombCount() {
+    this.displayBombCount = () => {
         if (this.bombCount) {
-            this.element.innerHTML = this.bombCount;
             this.element.classList.add(`_${this.bombCount}`);
+            this.element.innerHTML = this.bombCount;
         }
-    }
+    };
 
-    displayBomb() {
-        if (this.hasBomb) {
-            this.element.appendChild(getBombSVG());
-        }
-    }
+    this.displayBomb = () => {
+        if (this.hasBomb) this.element.appendChild(getBombSVG());
+    };
 
-    display() {
+    this.display = () => {
         this.element.classList.remove('hidden');
         this.hasBomb ? this.displayBomb() : this.displayBombCount();
-    }
+    };
 
-    hide() {
-        this.element.innerHTML = '';
-        this.element.classList.remove(`_${this.bombCount}`);
-        this.element.classList.add('hidden');
-    }
-
-    clickAdjCells() {
-        this.#adjCells.forEach(cellCoordinate =>
-            this.#grid.getCell(cellCoordinate).handleClick()
-        );
-    }
-
-    handleClick() {
+    this.handleClick = () => {
         if (this.isClicked) return;
         this.isClicked = true;
         this.display();
@@ -77,7 +56,13 @@ class Cell {
             this.state = 'empty';
             this.clickAdjCells();
         }
-    }
+    };
+
+    this.clickAdjCells = () => {
+        this.adjCells.forEach(cellCoordinate =>
+            this.grid.getCell(cellCoordinate).handleClick()
+        );
+    };
 }
 
 export default Cell;
