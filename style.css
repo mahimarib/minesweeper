@@ -1,0 +1,55 @@
+.grid {
+    height: 400px;
+    width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #dcd6bc;
+}
+
+.cell {
+    height: 40px;
+    width: 40px;
+    font-family: 'VT323', monospace;
+    font-size: 35px;
+    line-height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid #bab7a9;
+}
+
+.hidden {
+    border: 5px solid;
+    border-color: #f5f3eb #bab7a9 #bab7a9 #fff9db;
+}
+
+._1 {
+    color: blue;
+}
+
+._2 {
+    color: green;
+}
+
+._3 {
+    color: red;
+}
+
+._4 {
+    color: magenta;
+}
+
+._5 {
+    color: yellow;
+}
+
+._6 {
+    color: turquoise;
+}
+
+.bomb {
+    width: 35px;
+    height: 35px;
+}
