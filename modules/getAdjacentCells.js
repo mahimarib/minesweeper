@@ -11,10 +11,9 @@ function getAdjacentCells(coordinates, maxRows, maxCols) {
         [x + 1, y - 1],
     ];
 
-    const adjCells = possibleAdjCells.filter(
+    return possibleAdjCells.filter(
         ([x, y]) => x >= 0 && x < maxCols && y >= 0 && y < maxRows
     );
-    return adjCells;
 }
 
 export default getAdjacentCells;
