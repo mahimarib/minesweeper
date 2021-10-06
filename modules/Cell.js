@@ -1,13 +1,12 @@
 import getAdjacentCells from './getAdjacentCells.js';
 import getBombSVG from './getBombSVG.js';
-import openEmptyCells from './openEmptyCells.js';
 
 class Cell {
     coordinates;
     hasBomb;
     element;
     #grid;
-    adjCells;
+    #adjCells;
     bombCount = 0;
     state = 'hidden';
     isClicked = false;
@@ -20,7 +19,7 @@ class Cell {
         const [x, y] = this.coordinates;
         this.element.setAttribute('id', `${x}_${y}`);
         this.element.classList.add('cell', 'hidden');
-        this.adjCells = getAdjacentCells(
+        this.#adjCells = getAdjacentCells(
             this.coordinates,
             this.#grid.rows,
             this.#grid.cols
@@ -30,7 +29,7 @@ class Cell {
     // only use this method when all the cells are created.
     countBombs() {
         if (!this.hasBomb) {
-            this.adjCells.forEach(coor => {
+            this.#adjCells.forEach(coor => {
                 if (this.#grid.getCell(coor).hasBomb) this.bombCount++;
             });
         }
@@ -60,6 +59,12 @@ class Cell {
         this.element.classList.add('hidden');
     }
 
+    clickAdjCells() {
+        this.#adjCells.forEach(cellCoordinate =>
+            this.#grid.getCell(cellCoordinate).handleClick()
+        );
+    }
+
     handleClick() {
         if (this.isClicked) return;
         this.isClicked = true;
@@ -70,7 +75,7 @@ class Cell {
             this.state = 'number';
         } else {
             this.state = 'empty';
-            openEmptyCells(this, this.#grid);
+            this.clickAdjCells();
         }
     }
 }
