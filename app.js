@@ -1,5 +1,5 @@
 import Grid from './modules/Grid.js';
 
-const grid = new Grid(10, 10, 20);
+const gridElement = document.querySelector('.grid');
 
-grid.mount(document.querySelector('.grid'));
+const grid = new Grid(gridElement, 10, 10, 20);
