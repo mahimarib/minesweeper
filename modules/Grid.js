@@ -5,6 +5,7 @@ function Grid(domElement, rows, cols, bombCount) {
     this.rows = rows;
     this.cols = cols;
     this.bombCount = bombCount;
+    this.hasBombClicked = false;
 
     const randomBombs = shuffle([
         ...Array(this.bombCount).fill(true),
@@ -28,8 +29,15 @@ function Grid(domElement, rows, cols, bombCount) {
     });
 
     domElement.addEventListener('click', event => {
+        event.preventDefault();
         if (event.target.classList.contains('cell'))
             this.cells.get(event.target.id).handleClick();
+    });
+
+    domElement.addEventListener('contextmenu', event => {
+        event.preventDefault();
+        if (event.target.classList.contains('cell'))
+            this.cells.get(event.target.id).handleRightClick();
     });
 }
 

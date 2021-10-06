@@ -1,5 +1,5 @@
 import getAdjacentCells from './getAdjacentCells.js';
-import getBombSVG from './getBombSVG.js';
+import getImage from './getImage.js';
 
 function Cell(grid, coordinates, hasBomb) {
     this.grid = grid;
@@ -15,28 +15,39 @@ function Cell(grid, coordinates, hasBomb) {
     this.element.classList.add('cell', 'hidden');
     this.element.setAttribute('id', `${x}_${y}`);
 
-    this.adjCells = getAdjacentCells(
+    this.adjCellsCoors = getAdjacentCells(
         this.coordinates,
         this.grid.rows,
         this.grid.cols
     );
 
+    this.getAdjCells = () =>
+        this.adjCellsCoors.map(coor => this.grid.getCell(coor));
+
     this.countBombs = () => {
         if (!this.hasBomb)
-            this.adjCells.forEach(coor => {
-                if (this.grid.getCell(coor).hasBomb) this.bombCount++;
+            this.getAdjCells().forEach(cell => {
+                if (cell.hasBomb) this.bombCount++;
             });
     };
 
     this.displayBombCount = () => {
         if (this.bombCount) {
+            this.state = 'number';
             this.element.classList.add(`_${this.bombCount}`);
             this.element.innerHTML = this.bombCount;
+        } else {
+            this.state = 'empty';
+            this.clickAdjCells();
         }
     };
 
     this.displayBomb = () => {
-        if (this.hasBomb) this.element.appendChild(getBombSVG());
+        this.state = 'bomb';
+        const bombElement = getImage('../assets/mine.svg');
+        bombElement.classList.add('bomb');
+        this.element.appendChild(bombElement);
+        this.grid.hasBombClicked = true;
     };
 
     this.display = () => {
@@ -44,25 +55,36 @@ function Cell(grid, coordinates, hasBomb) {
         this.hasBomb ? this.displayBomb() : this.displayBombCount();
     };
 
-    this.handleClick = () => {
-        if (this.isClicked) return;
-        this.isClicked = true;
-        this.display();
-        if (this.hasBomb) {
-            this.state = 'bomb';
-        } else if (this.bombCount) {
-            this.state = 'number';
-        } else {
-            this.state = 'empty';
-            this.clickAdjCells();
-        }
+    this.setFlag = () => {
+        this.state = 'flag';
+        const flagElement = getImage('../assets/flag.svg');
+        flagElement.classList.add('flag');
+        this.element.appendChild(flagElement);
     };
 
-    this.clickAdjCells = () => {
-        this.adjCells.forEach(cellCoordinate =>
-            this.grid.getCell(cellCoordinate).handleClick()
-        );
+    this.clickNumber = () => {
+        const adjFlags = this.getAdjCells().filter(
+            cell => cell.state === 'flag'
+        ).length;
+        if (this.bombCount === adjFlags)
+            this.getAdjCells().forEach(cell => {
+                if (cell.state === 'hidden') cell.handleClick();
+            });
     };
+
+    this.handleClick = () => {
+        if (this.state === 'number') this.clickNumber();
+        else this.display();
+    };
+
+    this.handleRightClick = () => {
+        if (this.state === 'hidden') this.setFlag();
+    };
+
+    this.clickAdjCells = () =>
+        this.getAdjCells().map(cell => {
+            if (cell.state === 'hidden') cell.handleClick();
+        });
 }
 
 export default Cell;
