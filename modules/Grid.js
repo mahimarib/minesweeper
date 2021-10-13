@@ -1,3 +1,4 @@
+import { flags } from '../app.js';
 import Cell from './Cell.js';
 import shuffle from './shuffle.js';
 
@@ -35,9 +36,13 @@ function Grid(domElement, rows, cols, bombCount) {
     });
 
     domElement.addEventListener('contextmenu', event => {
+        const target = event.target;
+        if (target.classList.contains('cell')) {
+            this.cells.get(target.id).handleRightClick();
+        } else if (target.nodeName === 'IMG') {
+            this.cells.get(target.parentNode.id).handleRightClick();
+        }
         event.preventDefault();
-        if (event.target.classList.contains('cell'))
-            this.cells.get(event.target.id).handleRightClick();
     });
 }
 

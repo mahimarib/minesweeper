@@ -1,3 +1,4 @@
+import { flags } from '../app.js';
 import getAdjacentCells from './getAdjacentCells.js';
 import getImage from './getImage.js';
 
@@ -7,8 +8,8 @@ function Cell(grid, coordinates, hasBomb) {
     this.hasBomb = hasBomb;
     this.element = document.createElement('div');
     this.state = 'hidden';
-    this.isClicked = false;
     this.bombCount = 0;
+    const [getFlags, setFlags] = flags;
 
     const [x, y] = this.coordinates;
 
@@ -55,20 +56,13 @@ function Cell(grid, coordinates, hasBomb) {
         this.hasBomb ? this.displayBomb() : this.displayBombCount();
     };
 
-    this.setFlag = () => {
-        this.state = 'flag';
-        const flagElement = getImage('../assets/flag.svg');
-        flagElement.classList.add('flag');
-        this.element.appendChild(flagElement);
-    };
-
     this.clickNumber = () => {
         const adjFlags = this.getAdjCells().filter(
             cell => cell.state === 'flag'
         ).length;
         if (this.bombCount === adjFlags)
             this.getAdjCells().forEach(cell => {
-                if (cell.state === 'hidden') cell.handleClick();
+                if (cell.state === 'hidden') cell.display();
             });
     };
 
@@ -78,12 +72,22 @@ function Cell(grid, coordinates, hasBomb) {
     };
 
     this.handleRightClick = () => {
-        if (this.state === 'hidden') this.setFlag();
+        if (this.state === 'hidden') {
+            this.state = 'flag';
+            const flagElement = getImage('../assets/flag.svg');
+            flagElement.classList.add('flag');
+            this.element.appendChild(flagElement);
+            setFlags(getFlags() - 1);
+        } else if (this.state === 'flag') {
+            this.element.innerHTML = '';
+            this.state = 'hidden';
+            setFlags(getFlags() + 1);
+        }
     };
 
     this.clickAdjCells = () =>
-        this.getAdjCells().map(cell => {
-            if (cell.state === 'hidden') cell.handleClick();
+        this.getAdjCells().forEach(cell => {
+            if (cell.state === 'hidden') cell.display();
         });
 }
 
