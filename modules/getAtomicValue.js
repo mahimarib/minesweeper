@@ -3,12 +3,12 @@ function getAtomicValue(value) {
     const getValue = () => value;
     const setValue = newValue => {
         value = newValue;
-        callbacks.forEach(callback => callback());
+        callbacks.forEach(callback => callback(value));
     };
-    const persistChange = callback => {
-        callbacks = [...callback, callback];
+    const addHook = callback => {
+        callbacks.push(callback);
     };
-    return [getValue, setValue, persistChange];
+    return [getValue, setValue, addHook];
 }
 
 export default getAtomicValue;
