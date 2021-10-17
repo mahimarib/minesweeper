@@ -1,4 +1,4 @@
-import { flags } from '../app.js';
+import { getFlagCount, setFlagCount } from './flagContext.js';
 import getAdjacentCells from './getAdjacentCells.js';
 import getImage from './getImage.js';
 
@@ -9,7 +9,6 @@ function Cell(grid, coordinates, hasBomb) {
     this.element = document.createElement('div');
     this.state = 'hidden';
     this.bombCount = 0;
-    const [getFlags, setFlags] = flags;
 
     const [x, y] = this.coordinates;
 
@@ -73,15 +72,17 @@ function Cell(grid, coordinates, hasBomb) {
 
     this.handleRightClick = () => {
         if (this.state === 'hidden') {
+            // set flag
             this.state = 'flag';
             const flagElement = getImage('../assets/flag.svg');
             flagElement.classList.add('flag');
             this.element.appendChild(flagElement);
-            setFlags(getFlags() - 1);
+            setFlagCount(getFlagCount() - 1);
         } else if (this.state === 'flag') {
+            // remove flag
             this.element.innerHTML = '';
             this.state = 'hidden';
-            setFlags(getFlags() + 1);
+            setFlagCount(getFlagCount() + 1);
         }
     };
 

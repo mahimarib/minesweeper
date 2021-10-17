@@ -1,4 +1,3 @@
-import { flags } from '../app.js';
 import Cell from './Cell.js';
 import shuffle from './shuffle.js';
 
