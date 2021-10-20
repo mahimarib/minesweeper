@@ -1,14 +1,14 @@
 function getAtomicValue(value) {
     const callbacks = [];
     const getValue = () => value;
-    const setValue = newValue => {
-        value = newValue;
+    const setValue = update => {
+        value = typeof update === 'function' ? update(value) : update;
         callbacks.forEach(callback => callback(value));
     };
-    const addHook = callback => {
+    const onChange = callback => {
         callbacks.push(callback);
     };
-    return [getValue, setValue, addHook];
+    return [getValue, setValue, onChange];
 }
 
 export default getAtomicValue;
