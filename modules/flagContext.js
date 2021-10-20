@@ -1,5 +1,5 @@
 import getAtomicValue from './getAtomicValue.js';
 
-const [getFlagCount, setFlagCount, addHook] = getAtomicValue(0);
+const [getFlagCount, setFlagCount, onChange] = getAtomicValue(0);
 
-export { getFlagCount, setFlagCount, addHook };
+export { getFlagCount, setFlagCount, onChange };
