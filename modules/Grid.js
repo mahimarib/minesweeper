@@ -1,11 +1,34 @@
 import Cell from './Cell.js';
+import getAtomicValue from './getAtomicValue.js';
 import shuffle from './shuffle.js';
+import { onChange as flagOnChange } from './flagContext.js';
 
 function Grid(domElement, rows, cols, bombCount) {
     this.rows = rows;
     this.cols = cols;
     this.bombCount = bombCount;
-    this.hasBombClicked = false;
+    const [getState, setState, onChange] = getAtomicValue({
+        hasBombClicked: false,
+        hiddenCells: this.rows * this.cols,
+        numOfFlags: 0,
+    });
+
+    onChange(state => console.log(state));
+
+    onChange(({ hasBombClicked, hiddenCells, numOfFlags }) => {
+        if (hasBombClicked) console.log('game over');
+        else if (hiddenCells === numOfFlags) console.log('YOU WON!!!!');
+    });
+
+    flagOnChange(flagsRemaining =>
+        this.setState(prevState => ({
+            ...prevState,
+            numOfFlags: this.bombCount - flagsRemaining,
+        }))
+    );
+
+    this.getState = getState;
+    this.setState = setState;
 
     const randomBombs = shuffle([
         ...Array(this.bombCount).fill(true),
