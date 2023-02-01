@@ -7,17 +7,19 @@ function Grid(domElement, rows, cols, bombCount) {
     this.rows = rows;
     this.cols = cols;
     this.bombCount = bombCount;
+
     const [getState, setState, onChange] = getAtomicValue({
         hasBombClicked: false,
         hiddenCells: this.rows * this.cols,
         numOfFlags: 0,
     });
 
-    onChange(state => console.log(state));
-
     onChange(({ hasBombClicked, hiddenCells, numOfFlags }) => {
-        if (hasBombClicked) console.log('game over');
-        else if (hiddenCells === numOfFlags) console.log('YOU WON!!!!');
+        if (hasBombClicked) {
+            console.log('game over');
+            domElement.removeEventListener('click', clickEvent);
+            domElement.removeEventListener('contextnemu', rightClickEvent);
+        } else if (hiddenCells === numOfFlags) console.log('YOU WON!!!!');
     });
 
     flagOnChange(flagsRemaining =>
@@ -51,13 +53,13 @@ function Grid(domElement, rows, cols, bombCount) {
         cell.countBombs();
     });
 
-    domElement.addEventListener('click', event => {
+    const clickEvent = event => {
         event.preventDefault();
         if (event.target.classList.contains('cell'))
             this.cells.get(event.target.id).handleClick();
-    });
+    };
 
-    domElement.addEventListener('contextmenu', event => {
+    const rightClickEvent = event => {
         const target = event.target;
         if (target.classList.contains('cell')) {
             this.cells.get(target.id).handleRightClick();
@@ -65,7 +67,10 @@ function Grid(domElement, rows, cols, bombCount) {
             this.cells.get(target.parentNode.id).handleRightClick();
         }
         event.preventDefault();
-    });
+    };
+
+    domElement.addEventListener('click', clickEvent);
+    domElement.addEventListener('contextmenu', rightClickEvent);
 }
 
 export default Grid;
