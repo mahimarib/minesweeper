@@ -14,23 +14,19 @@ function Grid(domElement, rows, cols, bombCount) {
         numOfFlags: 0,
     });
 
+    const removeListeners = () => {
+        domElement.removeEventListener('click', clickEvent);
+        domElement.removeEventListener('contextmenu', rightClickEvent);
+        domElement.addEventListener('contextmenu', e => e.preventDefault());
+    };
+
     onChange(({ hasBombClicked, hiddenCells, numOfFlags }) => {
         if (hasBombClicked) {
             console.log('game over');
-            domElement.removeEventListener('click', clickEvent);
-            domElement.removeEventListener(
-                'contextnemu',
-                rightClickEvent,
-                true
-            );
+            removeListeners();
         } else if (hiddenCells === numOfFlags) {
             console.log('YOU WON!!!!');
-            domElement.removeEventListener('click', clickEvent);
-            domElement.removeEventListener(
-                'contextnemu',
-                rightClickEvent,
-                true
-            );
+            removeListeners();
         }
     });
 
@@ -66,9 +62,9 @@ function Grid(domElement, rows, cols, bombCount) {
     });
 
     const clickEvent = event => {
-        event.preventDefault();
         if (event.target.classList.contains('cell'))
             this.cells.get(event.target.id).handleClick();
+        event.preventDefault();
     };
 
     const rightClickEvent = event => {
