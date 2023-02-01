@@ -18,8 +18,20 @@ function Grid(domElement, rows, cols, bombCount) {
         if (hasBombClicked) {
             console.log('game over');
             domElement.removeEventListener('click', clickEvent);
-            domElement.removeEventListener('contextnemu', rightClickEvent);
-        } else if (hiddenCells === numOfFlags) console.log('YOU WON!!!!');
+            domElement.removeEventListener(
+                'contextnemu',
+                rightClickEvent,
+                true
+            );
+        } else if (hiddenCells === numOfFlags) {
+            console.log('YOU WON!!!!');
+            domElement.removeEventListener('click', clickEvent);
+            domElement.removeEventListener(
+                'contextnemu',
+                rightClickEvent,
+                true
+            );
+        }
     });
 
     flagOnChange(flagsRemaining =>
