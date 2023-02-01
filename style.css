@@ -1,9 +1,22 @@
+body {
+    background-color: #dcd6bc;
+}
+
+body,
+html {
+    height: 100%;
+    display: grid;
+}
+
 .grid {
     height: 400px;
     width: 400px;
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
     background-color: #dcd6bc;
+    border: 5px solid;
+    border-color: #bab7a9 #f5f3eb #fff9db #bab7a9;
 }
 
 .cell {
