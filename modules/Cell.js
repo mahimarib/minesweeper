@@ -44,7 +44,7 @@ function Cell(grid, coordinates, hasBomb) {
 
     this.displayBomb = () => {
         this.setState('bomb');
-        const bombElement = getImage('../assets/mine.svg');
+        const bombElement = getImage('./../assets/mine.svg');
         bombElement.classList.add('bomb');
         this.element.appendChild(bombElement);
         grid.setState(prevState => ({
@@ -74,10 +74,13 @@ function Cell(grid, coordinates, hasBomb) {
     };
 
     this.handleRightClick = () => {
-        if (this.getState() === 'hidden') {
+        if (
+            this.getState() === 'hidden' &&
+            grid.getState().numOfFlags < grid.bombCount
+        ) {
             // set flag
             this.setState('flag');
-            const flagElement = getImage('../assets/flag.svg');
+            const flagElement = getImage('./../assets/flag.svg');
             flagElement.classList.add('flag');
             this.element.appendChild(flagElement);
             setFlagCount(prevCount => prevCount - 1);
