@@ -70,7 +70,7 @@ function Cell(grid, coordinates, hasBomb) {
 
     this.handleClick = () => {
         if (this.getState() === 'number') this.clickNumber();
-        else this.display();
+        else if (this.getState() !== 'flag') this.display();
     };
 
     this.handleRightClick = () => {
