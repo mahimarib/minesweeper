@@ -1,11 +1,11 @@
-body {
-    background-color: #dcd6bc;
-}
-
 body,
 html {
     height: 100%;
     display: grid;
+}
+
+body {
+    background-color: #dcd6bc;
 }
 
 .grid {
