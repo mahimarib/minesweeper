@@ -2,6 +2,7 @@ import Cell from './Cell.js';
 import getAtomicValue from './getAtomicValue.js';
 import shuffle from './shuffle.js';
 import { onChange as flagOnChange } from './flagContext.js';
+import longPress from './longPress.js';
 
 function Grid(domElement, rows, cols, bombCount) {
     this.rows = rows;
@@ -18,6 +19,7 @@ function Grid(domElement, rows, cols, bombCount) {
         domElement.removeEventListener('click', clickEvent);
         domElement.removeEventListener('contextmenu', rightClickEvent);
         domElement.addEventListener('contextmenu', e => e.preventDefault());
+        longPressCleanUp();
     };
 
     onChange(({ hasBombClicked, hiddenCells, numOfFlags }) => {
@@ -77,6 +79,7 @@ function Grid(domElement, rows, cols, bombCount) {
         event.preventDefault();
     };
 
+    const longPressCleanUp = longPress(domElement, 500, rightClickEvent);
     domElement.addEventListener('click', clickEvent);
     domElement.addEventListener('contextmenu', rightClickEvent);
 }
