@@ -79,10 +79,10 @@ function Cell(grid, coordinates, hasBomb) {
             grid.getState().numOfFlags < grid.bombCount
         ) {
             // set flag
-            this.setState('flag');
             const flagElement = getImage('assets/flag.svg');
             flagElement.classList.add('flag');
             this.element.appendChild(flagElement);
+            this.setState('flag');
             setFlagCount(prevCount => prevCount - 1);
         } else if (this.getState() === 'flag') {
             // remove flag
