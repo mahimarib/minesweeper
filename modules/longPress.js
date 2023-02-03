@@ -1,18 +1,18 @@
-function longPress(domElement, timeMs, flagFunc, clickFunc) {
+function longPress(domElement, timeMs, longClick, shortClick) {
     let timerID;
     let hasRun = false;
 
     const touchStart = event => {
         event.preventDefault();
         timerID = window.setTimeout(() => {
-            flagFunc(event);
+            longClick(event);
             hasRun = true;
         }, timeMs);
     };
 
     const touchEnd = event => {
         clearTimeout(timerID);
-        if (!hasRun) clickFunc(event);
+        if (!hasRun) shortClick(event);
         hasRun = false;
     };
 
