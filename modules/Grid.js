@@ -33,6 +33,7 @@ function Grid(domElement, rows, cols, bombCount) {
             console.log('YOU WON!!!!');
             removeListeners();
         }
+        console.log({ hasBombClicked, hiddenCells, numOfFlags });
     });
 
     flagOnChange(flagsRemaining =>
@@ -90,7 +91,6 @@ function Grid(domElement, rows, cols, bombCount) {
     );
     domElement.addEventListener('click', clickEvent);
     domElement.addEventListener('contextmenu', rightClickEvent);
-    domElement.addEventListener('webkitmouseforcedown', rightClickEvent);
 }
 
 export default Grid;
