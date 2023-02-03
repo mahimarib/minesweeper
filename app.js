@@ -5,7 +5,7 @@ const gridElement = document.querySelector('.grid');
 
 const rows = 15;
 const cols = 20;
-const bombs = 30;
+const bombs = 50;
 
 setFlagCount(bombs);
 
