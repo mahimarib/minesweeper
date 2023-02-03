@@ -1,28 +1,27 @@
-function longPress(domElement, timeMs, func) {
+function longPress(domElement, timeMs, flagFunc, clickFunc) {
     let timerID;
+    let hasRun = false;
 
-    const mouseDown = event =>
-        (timerID = window.setTimeout(() => longPress(event), timeMs));
-
-    const mouseUp = () => clearTimeout(timerID);
-
-    domElement.addEventListener('mousedown', mouseDown);
-
-    domElement.addEventListener('mouseup', mouseUp);
-
-    const longPress = event => {
-        func(event);
-        window.addEventListener('click', captureClick, true);
+    const touchStart = event => {
+        event.preventDefault();
+        timerID = window.setTimeout(() => {
+            flagFunc(event);
+            hasRun = true;
+        }, timeMs);
     };
 
-    const captureClick = event => {
-        event.stopPropagation();
-        window.removeEventListener('click', captureClick, true);
+    const touchEnd = event => {
+        clearTimeout(timerID);
+        if (!hasRun) clickFunc(event);
+        hasRun = false;
     };
+
+    domElement.addEventListener('touchstart', touchStart);
+    domElement.addEventListener('touchend', touchEnd);
 
     return () => {
-        domElement.removeEventListener('mousedown', mouseDown);
-        domElement.removeEventListener('mouseup', mouseUp);
+        domElement.removeEventListener('touchstart', touchStart);
+        domElement.removeEventListener('touchend', touchEnd);
     };
 }
 

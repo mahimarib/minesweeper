@@ -18,8 +18,8 @@ function Grid(domElement, rows, cols, bombCount) {
     const removeListeners = () => {
         domElement.removeEventListener('click', clickEvent);
         domElement.removeEventListener('contextmenu', rightClickEvent);
-        domElement.addEventListener('contextmenu', e => e.preventDefault());
         longPressCleanUp();
+        domElement.addEventListener('contextmenu', e => e.preventDefault());
     };
 
     onChange(({ hasBombClicked, hiddenCells, numOfFlags }) => {
@@ -79,9 +79,15 @@ function Grid(domElement, rows, cols, bombCount) {
         event.preventDefault();
     };
 
-    const longPressCleanUp = longPress(domElement, 500, rightClickEvent);
+    const longPressCleanUp = longPress(
+        domElement,
+        500,
+        rightClickEvent,
+        clickEvent
+    );
     domElement.addEventListener('click', clickEvent);
     domElement.addEventListener('contextmenu', rightClickEvent);
+    domElement.addEventListener('webkitmouseforcedown', rightClickEvent);
 }
 
 export default Grid;
