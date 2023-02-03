@@ -9,6 +9,9 @@ function Grid(domElement, rows, cols, bombCount) {
     this.cols = cols;
     this.bombCount = bombCount;
 
+    domElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    domElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
     const [getState, setState, onChange] = getAtomicValue({
         hasBombClicked: false,
         hiddenCells: this.rows * this.cols,
@@ -54,8 +57,8 @@ function Grid(domElement, rows, cols, bombCount) {
 
     let c = 0;
 
-    for (let x = 0; x < this.cols; x++)
-        for (let y = 0; y < this.rows; y++)
+    for (let x = 0; x < this.rows; x++)
+        for (let y = 0; y < this.cols; y++)
             this.setCell([x, y], new Cell(this, [x, y], randomBombs[c++]));
 
     this.cells.forEach(cell => {

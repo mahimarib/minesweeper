@@ -3,9 +3,9 @@ import Grid from './modules/Grid.js';
 
 const gridElement = document.querySelector('.grid');
 
-const rows = 10,
-    cols = 10,
-    bombs = 20;
+const rows = 15;
+const cols = 20;
+const bombs = 30;
 
 setFlagCount(bombs);
 

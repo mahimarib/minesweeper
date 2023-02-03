@@ -12,7 +12,7 @@ function getAdjacentCells(coordinates, maxRows, maxCols) {
     ];
 
     return possibleAdjCells.filter(
-        ([x, y]) => 0 <= x && x < maxCols && 0 <= y && y < maxRows
+        ([x, y]) => 0 <= y && y < maxCols && 0 <= x && x < maxRows
     );
 }
 

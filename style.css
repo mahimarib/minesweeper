@@ -15,11 +15,9 @@ body {
 }
 
 .grid {
-    height: 400px;
-    width: 400px;
     margin: auto;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+
     background-color: #dcd6bc;
     border: 5px solid;
     border-color: #bab7a9 #f5f3eb #fff9db #bab7a9;
