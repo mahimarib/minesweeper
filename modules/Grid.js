@@ -33,7 +33,6 @@ function Grid(domElement, rows, cols, bombCount) {
             console.log('YOU WON!!!!');
             removeListeners();
         }
-        console.log({ hasBombClicked, hiddenCells, numOfFlags });
     });
 
     flagOnChange(flagsRemaining =>
@@ -58,8 +57,8 @@ function Grid(domElement, rows, cols, bombCount) {
 
     let c = 0;
 
-    for (let x = 0; x < this.rows; x++)
-        for (let y = 0; y < this.cols; y++)
+    for (let y = 0; y < this.rows; y++)
+        for (let x = 0; x < this.cols; x++)
             this.setCell([x, y], new Cell(this, [x, y], randomBombs[c++]));
 
     this.cells.forEach(cell => {
